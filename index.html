@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Happy Birthday Joy 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --p: #ff5fa2;
+            --p2: #ffb3d1;
+            --bg1: #fff0f6;
+            --bg2: #ffd6e8;
+            --tx: #7a1f4d
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        html,
+        body {
+            min-height: 100%
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--tx);
+            background: linear-gradient(160deg, var(--bg1), var(--bg2) 60%, #f3c6ff);
+            overflow-x: hidden;
+            padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
+        }
+
+        canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50
+        }
+
+        .scene {
+            display: none;
+            min-height: 100svh;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 28px 20px;
+            gap: 18px;
+            position: relative;
+            z-index: 2
+        }
+
+        .scene.on {
+            display: flex;
+            animation: in .9s ease
+        }
+
+        @keyframes in {
+            from {
+                opacity: 0;
+                transform: translateY(24px) scale(.97)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        h1,
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-weight: 400;
+            color: var(--p);
+            line-height: 1.1
+        }
+
+        h1 {
+            font-size: clamp(3rem, 15vw, 6rem)
+        }
+
+        h2 {
+            font-size: clamp(2.4rem, 10vw, 3.6rem)
+        }
+
+        .type {
+            font-size: clamp(1.05rem, 4.6vw, 1.4rem);
+            line-height: 1.7;
+            max-width: 520px;
+            min-height: 1.7em
+        }
+
+        .type p {
+            margin: 10px 0;
+            opacity: 0;
+            animation: in .6s forwards
+        }
+
+        .cur::after {
+            content: '💗';
+            margin-left: 4px;
+            animation: bl .8s infinite
+        }
+
+        @keyframes bl {
+            50% {
+                opacity: 0
+            }
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 50px;
+            padding: 15px 34px;
+            font: 700 1.1rem Quicksand;
+            color: #fff;
+            background: linear-gradient(135deg, #ff7eb3, #ff4f9a);
+            box-shadow: 0 8px 24px #ff4f9a66;
+            cursor: pointer;
+            animation: pulse 1.8s infinite;
+            text-decoration: none;
+            display: inline-block
+        }
+
+        .btn.hide {
+            display: none
+        }
+
+        @keyframes pulse {
+            50% {
+                transform: scale(1.07)
+            }
+        }
+
+        .heart {
+            font-size: 5rem;
+            animation: beat 1.2s infinite
+        }
+
+        @keyframes beat {
+            15% {
+                transform: scale(1.25)
+            }
+
+            30% {
+                transform: scale(1)
+            }
+
+            45% {
+                transform: scale(1.18)
+            }
+        }
+
+        /* countdown */
+        .cd {
+            display: flex;
+            gap: 10px;
+            justify-content: center
+        }
+
+        .cd div {
+            background: #ffffffd9;
+            border-radius: 16px;
+            padding: 12px 4px;
+            width: clamp(64px, 20vw, 92px);
+            box-shadow: 0 8px 22px #ff4f9a44
+        }
+
+        .cd b {
+            display: block;
+            font-size: clamp(1.8rem, 9vw, 2.8rem);
+            color: var(--p);
+            font-variant-numeric: tabular-nums
+        }
+
+        .cd span {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase
+        }
+
+        /* cake */
+        .cake {
+            position: relative;
+            width: 210px;
+            height: 190px;
+            margin-top: 40px
+        }
+
+        .tier {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 14px 14px 8px 8px
+        }
+
+        .t1 {
+            bottom: 0;
+            width: 210px;
+            height: 70px;
+            background: linear-gradient(#ff9ec7, #ff6fae)
+        }
+
+        .t2 {
+            bottom: 70px;
+            width: 150px;
+            height: 60px;
+            background: linear-gradient(#ffd1e5, #ffa9cf)
+        }
+
+        .drip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 14px;
+            background: #fff;
+            border-radius: 14px 14px 40% 40%
+        }
+
+        .can {
+            position: absolute;
+            bottom: 130px;
+            width: 8px;
+            height: 34px;
+            background: repeating-linear-gradient(#fff 0 6px, #ff5fa2 6px 12px);
+            border-radius: 3px
+        }
+
+        .fl {
+            position: absolute;
+            top: -20px;
+            left: -4px;
+            width: 16px;
+            height: 22px;
+            background: radial-gradient(#fff6a8, #ffb300);
+            border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+            animation: fk .3s infinite alternate;
+            box-shadow: 0 0 18px 6px #ffc83d99;
+            transition: .4s
+        }
+
+        .out .fl {
+            opacity: 0;
+            transform: scale(0)
+        }
+
+        @keyframes fk {
+            to {
+                transform: scale(1.12) rotate(5deg)
+            }
+        }
+
+        /* letter */
+        .env {
+            font-size: 6rem;
+            cursor: pointer;
+            animation: beat 1.4s infinite
+        }
+
+        .letter {
+            background: #fffafc;
+            border-radius: 18px;
+            padding: 26px 22px;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: 0 14px 40px #ff4f9a44;
+            border: 2px dashed var(--p2);
+            text-align: left;
+            font-size: clamp(1rem, 4.2vw, 1.2rem);
+            line-height: 1.8;
+            display: none;
+            max-height: 62svh;
+            overflow: auto
+        }
+
+        .letter .sig {
+            font-family: 'Great Vibes';
+            font-size: 2.2rem;
+            color: var(--p);
+            margin-top: 10px
+        }
+
+        /* memories */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            max-width: 560px;
+            width: 100%
+        }
+
+        .pol {
+            background: #fff;
+            padding: 9px 9px 8px;
+            border-radius: 6px;
+            box-shadow: 0 10px 24px #7a1f4d33;
+            opacity: 0;
+            transform: translateY(40px) rotate(0);
+            transition: .9s cubic-bezier(.2, 1.4, .4, 1);
+            cursor: pointer
+        }
+
+        .pol.show {
+            opacity: 1;
+            transform: rotate(var(--r))
+        }
+
+        .pol .im {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #ffe0ee, #ffc2dc);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            overflow: hidden
+        }
+
+        .pol img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .pol small {
+            display: block;
+            /* font-family: 'Great Vibes'; */
+            font-size: 1.3rem;
+            color: var(--p);
+            padding-top: 4px
+        }
+
+        /* reasons */
+        .rs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 500px;
+            width: 100%
+        }
+
+        .r {
+            background: #ffffffcc;
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-weight: 600;
+            box-shadow: 0 6px 18px #ff4f9a33;
+            opacity: 0;
+            transform: translateX(-40px) scale(.9);
+            transition: .7s
+        }
+
+        .r.show {
+            opacity: 1;
+            transform: none
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="cv"></canvas>
+
+    <!-- 0 intro -->
+    <!-- countdown gate -->
+    <section class="scene on" id="sc">
+        <div class="heart">🎁</div>
+        <h1>Hey Joy 💕</h1>
+        <p class="type">Something very special is waiting for you, my love… but it only opens on your birthday, 18th
+            October 🎂</p>
+        <div class="cd">
+            <div><b id="cd-d">00</b><span>Days</span></div>
+            <div><b id="cd-h">00</b><span>Hours</span></div>
+            <div><b id="cd-m">00</b><span>Mins</span></div>
+            <div><b id="cd-s">00</b><span>Secs</span></div>
+        </div>
+        <p class="type">Come back when the countdown ends. It will be worth the wait 😘</p>
+    </section>
+
+    <!-- 0 intro -->
+    <section class="scene" id="s0">
+        <div class="heart">💝</div>
+        <h1>For Joy</h1>
+        <p class="type">Something special was made just for you, my love…</p>
+        <button class="btn" id="start">Tap to open 🎀</button>
+    </section>
+
+    <!-- 1 typed words -->
+    <section class="scene" id="s1">
+        <h2>Happy Birthday, Joy 🎂</h2>
+        <div class="type cur" id="t1"></div>
+        <button class="btn hide" data-next>Continue 💕</button>
+    </section>
+
+    <!-- 2 cake -->
+    <section class="scene" id="s2">
+        <h2>Make a wish…</h2>
+        <div class="cake" id="cake">
+            <div class="tier t2">
+                <div class="drip"></div>
+            </div>
+            <div class="tier t1">
+                <div class="drip"></div>
+            </div>
+            <div class="can" style="left:70px">
+                <div class="fl"></div>
+            </div>
+            <div class="can" style="left:101px">
+                <div class="fl"></div>
+            </div>
+            <div class="can" style="left:132px">
+                <div class="fl"></div>
+            </div>
+        </div>
+        <p class="type" id="wishtxt">Close your eyes, think of your biggest dream, then blow out the candles 🕯️</p>
+        <button class="btn" id="blow">Blow the candles 💨</button>
+        <button class="btn hide" data-next>Open my letter 💌</button>
+    </section>
+
+    <!-- 3 letter -->
+    <section class="scene" id="s3">
+        <div class="env" id="env">💌</div>
+        <p class="type" id="envtxt">A Birthday letter is waiting for you. Tap it 🥹</p>
+        <div class="letter" id="letter">
+            <div id="lt"></div>
+            <div class="sig" id="sig"></div>
+        </div>
+        <button class="btn hide" data-next>See your memories 📸</button>
+    </section>
+
+    <!-- 4 memories -->
+    <section class="scene" id="s4">
+        <h2> Beautiful Memories</h2>
+        <div class="grid" id="grid"></div>
+        <input type="text" accept="image/*" id="file" hidden>
+        <button class="btn hide" data-next>One more thing… 💖</button>
+    </section>
+
+    <!-- 5 reasons -->
+    <section class="scene" id="s5">
+        <h2>Why I Love You</h2>
+        <div class="rs" id="rs"></div>
+        <button class="btn hide" data-next>Your last surprise 🎁</button>
+    </section>
+
+    <!-- 6 finale -->
+    <section class="scene" id="s6">
+        <h1 id="fh">Joy Fred</h1>
+        <div class="type" id="ft">You deserve the whole world, so here is a little something to start 🎁</div>
+        <button class="btn" id="gift">🎁 Tap for your gift</button>
+        <a class="btn hide lastGift" id="wa"  rel="noopener">💸 Receive your money gift</a>
+    </section>
+
+    <script>
+        document.querySelector('.lastGift').addEventListener("click", function () {
+            alert("Werey 😂🤣🤣 which gift u de find come on go pay ur debt 😂🤣🤣😂🤣🤣. oya dm mk i help ur life ")
+        })
+        /* ====== EDIT THESE ====== */
+        const WA_NUMBER = "234XXXXXXXXXX";   // your WhatsApp number, country code first, no + or spaces
+        const WA_TEXT = "Hi my love, I just opened my birthday gift! 💖 Please send my money gift 😘";
+        const FROM = "Your Love";       // sign-off name
+        // Put your photos in a "photos" folder next to this file. Leave src empty to tap-and-pick a photo.
+        const PHOTOS = [
+            { src: "images/7.jpg", cap: "Very Dangerous entity" },
+            { src: "images/8.jpg", cap: "Senion man by birth - Rugged U " },
+            { src: "images/4.jpg", cap: "Oya mk i enter uniben" },
+            { src: "images/1.jpg", cap: "Omooo Uniben Sweet o, see my nails na clock it 😘" },
+            { src: "images/5.jpg", cap: "Omooo i don catch one fine boy he give me e ATM card mk i enter mat ice" },
+            { src: "images/9.jpg", cap: "Omoo see as i fine na " },
+            { src: "images/2.jpg", cap: "Omooo my my money don de finish ooo see as i be " },
+            { src: "images/13.jpg", cap: "Omooo u sure say i never craze before - abi mk i barb this hair - Tinuubuuu" },
+            { src: "images/14.jpg", cap: "300L - omoo na so Uniben one take ruin my life - Sapa is real" },
+            { src: "images/3.jpg", cap: "Omooo mk i enter my papa village ooo - Belike i go see help" },
+            { src: "images/11.jpg", cap: "Finally i don see help - Dem carry me go play Snooker today - See my small Nyash " },
+            { src: "images/15.jpg", cap: "Jehoovaaa - Jesucristi - i finally leave uniben " },
+            { src: "images/6.jpg", cap: "oya na check am out - Have u seen a fine girl today" },
+        ];
+        /* ======================== */
+
+        const $ = s => document.querySelector(s), sleep = ms => new Promise(r => setTimeout(r, ms));
+        const cv = $('#cv'), cx = cv.getContext('2d', { alpha: true }); let W, H, P = []; const DPR = Math.min(devicePixelRatio || 1, 2), SP = {};
+        function spr(e, s) { s = Math.round(s / 8) * 8 || 8; const k = e + s; if (SP[k]) return SP[k]; const c = document.createElement('canvas'); c.width = c.height = Math.ceil(s * 1.6 * DPR); const x = c.getContext('2d'); x.scale(DPR, DPR); x.font = s + 'px serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(e, s * .8, s * .8); return SP[k] = c }
+        function rs() { const d = DPR; W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0) }
+        rs(); addEventListener('resize', rs);
+
+        function add(o) { if (P.length > 200) return; P.push(Object.assign({ x: 0, y: 0, vx: 0, vy: 0, g: 0, s: 22, e: '💖', r: 0, vr: 0, a: 1, l: 300 }, o)) }
+        function float() { if (Math.random() < .025) add({ x: Math.random() * W, y: H + 30, vx: (Math.random() - .5) * .6, vy: -(0.6 + Math.random() * 1.2), s: 12 + Math.random() * 18, e: ['💖', '💗', '🌸', '💕', '✨', '🦋'][Math.random() * 6 | 0], a: .7, l: H / 1.2, vr: (Math.random() - .5) * .03 }) }
+        function burst(x, y, n = 40, em = ['💖', '✨', '🎉', '🌸', '💗']) { for (let i = 0; i < n; i++) { const a = Math.random() * 6.28, v = 2 + Math.random() * 6; add({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, g: .12, s: 14 + Math.random() * 16, e: em[Math.random() * em.length | 0], l: 90, vr: (Math.random() - .5) * .2 }) } }
+        function spray() { // money rain from sky + cannons from both sides
+            for (let i = 0; i < 9; i++) {
+                setTimeout(() => {
+                    for (let k = 0; k < 6; k++) {
+                        add({ x: Math.random() * W, y: -30, vx: (Math.random() - .5) * 2, vy: 2 + Math.random() * 3, g: .02, s: 26 + Math.random() * 16, e: Math.random() < .8 ? '💵' : '💸', l: H / 2.5, vr: (Math.random() - .5) * .12 });
+                        add({ x: 0, y: H * .7, vx: 4 + Math.random() * 7, vy: -(6 + Math.random() * 9), g: .2, s: 24, e: '💵', l: 140, vr: .1 });
+                        add({ x: W, y: H * .7, vx: -(4 + Math.random() * 7), vy: -(6 + Math.random() * 9), g: .2, s: 24, e: '💵', l: 140, vr: -.1 });
+                    }
+                }, i * 600)
+            }
+        }
+        (function loop() {
+            cx.setTransform(1, 0, 0, 1, 0, 0); cx.clearRect(0, 0, cv.width, cv.height);
+            if (!document.hidden) {
+                float();
+                P = P.filter(p => {
+                    p.x += p.vx; p.y += p.vy; p.vy += p.g; p.r += p.vr; p.l--;
+                    const im = spr(p.e, p.s), z = im.width / DPR, c = Math.cos(p.r) * DPR, n = Math.sin(p.r) * DPR;
+                    cx.globalAlpha = p.l < 30 ? p.a * p.l / 30 : p.a; cx.setTransform(c, n, -n, c, p.x * DPR, p.y * DPR); cx.drawImage(im, -z / 2, -z / 2, z, z);
+                    return p.l > 0 && p.y < H + 60
+                });
+            }
+            requestAnimationFrame(loop)
+        })();
+        document.addEventListener('pointerdown', e => burst(e.clientX, e.clientY, 4, ['💗', '✨', '💖']));
+
+        /* typing */
+        async function typeInto(el, text) {
+            const per = Math.max(1, Math.ceil(text.length / 220));
+            for (let i = 0; i < text.length; i += per) { el.textContent += text.slice(i, i + per); const c = text[i + per - 1]; await sleep(c && '.?!'.includes(c) ? 110 : c === ',' ? 50 : 12) }
+        }
+        async function typeLines(box, lines, sp, pause = 300) {
+            for (const l of lines) { const p = document.createElement('p'); box.appendChild(p); await typeInto(p, l, sp); await sleep(pause) }
+        }
+
+        /* scene flow (automation) */
+        let cur = 0;
+        function go(n) { document.querySelectorAll('.scene').forEach(s => s.classList.remove('on')); $('#s' + n).classList.add('on'); cur = n; scrollTo(0, 0); burst(W / 2, H / 2, 30); run[n] && run[n]() }
+        document.querySelectorAll('[data-next]').forEach(b => b.onclick = () => go(cur + 1));
+        const reveal = b => { b.classList.remove('hide') };
+
+        /* music: happy birthday synthesized */
+        let AC;
+        function song(rep = 2) {
+            AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+            const N = [[392, .75], [392, .25], [440, 1], [392, 1], [523, 1], [494, 2], [392, .75], [392, .25], [440, 1], [392, 1], [587, 1], [523, 2], [392, .75], [392, .25], [784, 1], [659, 1], [523, 1], [494, 1], [440, 2], [698, .75], [698, .25], [659, 1], [523, 1], [587, 1], [523, 2]];
+            let t = AC.currentTime + .1; const bt = .46;
+            for (let r = 0; r < rep; r++)for (const [f, d] of N) {
+                const o = AC.createOscillator(), g = AC.createGain(); o.type = 'triangle'; o.frequency.value = f;
+                g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.25, t + .03); g.gain.exponentialRampToValueAtTime(.001, t + d * bt);
+                o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d * bt + .05); t += d * bt
+            }
+        }
+
+        const run = {
+            1: async () => {
+                const b = $('#t1'); b.textContent = '';
+                await typeLines(b, [
+                    "Joy, today the world celebrates the day an angel was born 👼",
+                    "Your smile makes my worst days feel like sunshine ☀️",
+                    "You are my peace, my joy, my favorite person in the whole world 💞",
+                    "And I made this just to tell you how deeply you are loved 🥹"]);
+                b.classList.remove('cur'); reveal($('#s1 [data-next]'));
+                await sleep(2500); if (cur === 1) go(2)
+            },               // auto-advance if she waits
+            2: () => { },
+            3: () => { },
+            4: async () => { for (const p of document.querySelectorAll('.pol')) { p.classList.add('show'); burst(p.getBoundingClientRect().left + 60, p.getBoundingClientRect().top + 60, 6, ['💗']); await sleep(700) } reveal($('#s4 [data-next]')) },
+            5: async () => { const R = [...document.querySelectorAll('.r')]; for (const r of R) { r.classList.add('show'); await sleep(1300) } reveal($('#s5 [data-next]')) },
+            6: () => { }
+        };
+
+        /* countdown to birthday (device local time) */
+        const UNLOCK = new Date(2026, 9, 18, 0, 0, 0);            // 18 Oct 2026, 12:00am — change here if needed
+        const PREVIEW = /[?&]preview=joy18/.test(location.search); // only you use: yourlink?preview=joy18
+        const z2 = n => String(n).padStart(2, '0');
+        function tick() {
+            const d = UNLOCK - Date.now();
+            if (d <= 0 || PREVIEW) { clearInterval(ti); go(0); return }
+            const t = Math.floor(d / 1000);
+            $('#cd-d').textContent = z2(Math.floor(t / 86400)); $('#cd-h').textContent = z2(Math.floor(t % 86400 / 3600));
+            $('#cd-m').textContent = z2(Math.floor(t % 3600 / 60)); $('#cd-s').textContent = z2(t % 60)
+        }
+        const ti = setInterval(tick, 1000); tick();
+
+        /* start */
+        $('#start').onclick = () => { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); go(1) };
+
+        /* cake */
+        $('#blow').onclick = async function () {
+            this.classList.add('hide'); $('#cake').classList.add('out');
+            burst(W / 2, H / 2, 90, ['🎉', '🎊', '💖', '✨', '🎈']);
+            const w = $('#wishtxt'); w.textContent = ''; await typeInto(w, 'Your wish is already on its way to you, my love ✨🥰', 40);
+            reveal($('#s2 [data-next]'))
+        };
+
+        /* letter */
+        const LETTER = `My dearest Joy,
+
+From the moment you came into my life, everything became softer, brighter and sweeter. You taught me what it feels like to be truly happy.
+
+Thank you for your patience, your laughter, your beautiful heart and for loving me even on my difficult days. You are the answer to every prayer I never knew how to say.
+
+On your special day I promise to love you louder, hold you closer and choose you every single day. You are not just my girlfriend, you are my home.
+
+Happy Birthday, my queen. I love you more than words can ever hold. 💖`;
+        $('#env').onclick = async function () {
+            this.style.display = 'none'; $('#envtxt').style.display = 'none';
+            const L = $('#letter'); L.style.display = 'block'; burst(W / 2, H / 2, 50);
+            await typeInto($('#lt'), LETTER, 32);
+            $('#lt').style.whiteSpace = 'pre-line';
+            await typeInto($('#sig'), 'Forever yours, ' + FROM + ' 💋', 60);
+            reveal($('#s3 [data-next]'))
+        };
+        $('#lt').style.whiteSpace = 'pre-line';
+
+        /* memories */
+        const grid = $('#grid'), file = $('#file'); let slot;
+        PHOTOS.forEach((p, i) => {
+            const d = document.createElement('div'); d.className = 'pol'; d.style.setProperty('--r', ((i % 2 ? 1 : -1) * (1 + Math.random() * 3)) + 'deg');
+            d.innerHTML = `<div class="im">${p.src ? `<img src="${p.src}" alt="">` : '📸'}</div><small>${p.cap}</small>`;
+            const img = d.querySelector('img'); if (img) img.onerror = () => { img.parentNode.textContent = '📸' };
+            d.onclick = () => { if (d.querySelector('img')) return; slot = d; file.click() }; grid.appendChild(d)
+        });
+        file.onchange = () => { const f = file.files[0]; if (f) slot.querySelector('.im').innerHTML = `<img src="${URL.createObjectURL(f)}" alt="">` };
+
+        /* reasons */
+        ["You make me laugh until my stomach hurts 😂", "Your smile is my favorite view 😍", "You are kind, strong and beautifully real 🌷", "You make ordinary days feel like magic ✨", "With you, I am always home 🏡", "I will never stop choosing you 💍"].forEach(t => { const d = document.createElement('div'); d.className = 'r'; d.textContent = t; $('#rs').appendChild(d) });
+
+        /* finale */
+        $('#gift').onclick = async function () {
+            this.classList.add('hide'); song(2); spray();
+            $('#fh').textContent = 'Happy Birthday Joy! 🎉';
+            const f = $('#ft'); f.textContent = '';
+            await typeInto(f, 'Your special birthday gift is here, my love 💸 Tap below and message me on WhatsApp to receive it 😘', 40);
+            $('#wa').href = '#' + WA_NUMBER + '?text=' + encodeURIComponent(WA_TEXT);
+            reveal($('#wa')); spray()
+        };
+    </script>
+</body>
+
+</html>
